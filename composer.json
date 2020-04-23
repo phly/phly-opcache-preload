@@ -1,32 +1,33 @@
 {
-    "name": "laminas/laminas-{component}",
-    "description": "",
+    "name": "phly/phly-opcache-preload",
+    "description": "Create opcache preload rules for an application",
     "license": "BSD-3-Clause",
     "keywords": [
         "laminas"
     ],
     "support": {
-        "docs": "https://docs.laminas.dev/laminas-{component}/",
-        "issues": "https://github.com/laminas/laminas-{component}/issues",
-        "source": "https://github.com/laminas/laminas-{component}",
-        "rss": "https://github.com/laminas/laminas-{component}/releases.atom",
+        "docs": "https://docs.laminas.dev/laminas-opcache-preload/",
+        "issues": "https://github.com/phly/phly-opcache-preload/issues",
+        "source": "https://github.com/phly/phly-opcache-preload",
+        "rss": "https://github.com/phly/phly-opcache-preload/releases.atom",
         "forum": "https://discourse.laminas.dev/"
     },
     "require": {
-        "php": "^7.1"
+        "php": "^7.4",
+        "laminas/laminas-cli": "dev-master as 0.1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.1",
-        "squizlabs/php_codesniffer": "^3.5"
+        "laminas/laminas-coding-standard": "^2.0.0rc1@rc || ^2.0",
+        "phpunit/phpunit": "^8.1 || ^9.0"
     },
     "autoload": {
         "psr-4": {
-            "Laminas\\{component-namespace}\\": "src//"
+            "Phly\\OpcachePreload\\": "src//"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LaminasTest\\{component-namespace}\\": "test/"
+            "PhlyTest\\OpcachePreload\\": "test/"
         }
     },
     "extra": {
@@ -34,7 +35,7 @@
             "dev-master": "1.0.x-dev"
         },
         "laminas": {
-            "module": "Laminas\\{component-namespace}"
+            "module": "Phly\\OpcachePreload"
         }
     },
     "config": {

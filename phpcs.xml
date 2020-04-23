@@ -1,15 +1,20 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
-    <rule ref="PSR12"/>
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
 
-    <arg value="p"/>
+    <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
 
-    <file>src</file>
-    <file>test</file>
+    <!-- Show progress -->
+    <arg value="p"/>
 
-    <exclude-pattern>test/TestAsset/</exclude-pattern>
-    <exclude-pattern>test/classes.php</exclude-pattern>
+    <!-- Paths to check -->
+    <file>./src</file>
+    <file>./test</file>
+
+    <!-- Include all rules from the Laminas Coding Standard -->
+    <rule ref="LaminasCodingStandard"/>
 </ruleset>
