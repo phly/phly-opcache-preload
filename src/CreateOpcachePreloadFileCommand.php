@@ -151,15 +151,15 @@ END;
         }
 
         foreach (array_keys($composer['require']) as $package) {
-            if (0 === substr($package, 'mezzio/')) {
+            if (0 === strpos($package, 'mezzio/')) {
                 return self::TYPE_MEZZIO;
             }
 
-            if (0 === substr($package, 'laminas-api-tools/')) {
+            if (0 === strpos($package, 'laminas-api-tools/')) {
                 return self::TYPE_API_TOOLS;
             }
 
-            if (0 === substr($package, 'laminas/laminas-mvc')) {
+            if (0 === strpos($package, 'laminas/laminas-mvc')) {
                 // Only return TYPE_LAMINAS if no other types match
                 $type = self::TYPE_LAMINAS;
             }
