@@ -28,12 +28,16 @@ END;
 
     private const TEMPLATE = <<< 'END'
 %s
-
+// Initialize and configure Preloader. Use one or more of:
+// ->paths(...string $paths) to specify paths to look under
+// ->ignorePaths(...string $paths) to specify paths or files to ignore
+// ->ignoreClasses(...string $classes) to specify classes to never preload
 $preloader = new Preloader(%s);
 $preloader->paths(
 %s
 );
 
+// Preload!
 $preloader->load();
 END;
 
