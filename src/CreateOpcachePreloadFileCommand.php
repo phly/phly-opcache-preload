@@ -88,7 +88,7 @@ END;
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filename    = $input->getOption('filename');
-        $projectRoot = $this->discoverProjectRoot($filename);
+        $projectRoot = $this->discoverProjectRoot($filename, $output);
         if (null === $projectRoot) {
             return 1;
         }
