@@ -93,7 +93,7 @@ END;
             return 1;
         }
 
-        $paths = $this->createPaths($input->getOption('project-type'), $input->getOption('no-vendors'));
+        $paths = $this->createPaths($this->discoverProjectType($input), $input->getOption('no-vendors'));
 
         $contents = sprintf(
             self::TEMPLATE,
@@ -130,6 +130,42 @@ END;
         }
 
         return sprintf("__DIR__ . '%s/%s'", substr($filePath, strlen($currentDir)), basename($filename));
+    }
+
+    private function discoverProjectType(InputInterface $input): ?string
+    {
+        $type = $input->getOption('project-type');
+        if (null !== $type) {
+            return $type;
+        }
+
+        $composerFile = realpath(getcwd()) . '/composer.json';
+        if (! file_exists($composerFile)) {
+            return null;
+        }
+
+        $json = file_get_contents($composerFile);
+        $composer = json_decode($json, true);
+        if (! isset($composer['require'])) {
+            return null;
+        }
+
+        foreach (array_keys($composer['require']) as $package) {
+            if (0 === substr($package, 'mezzio/')) {
+                return self::TYPE_MEZZIO;
+            }
+
+            if (0 === substr($package, 'laminas-api-tools/')) {
+                return self::TYPE_API_TOOLS;
+            }
+
+            if (0 === substr($package, 'laminas/laminas-mvc')) {
+                // Only return TYPE_LAMINAS if no other types match
+                $type = self::TYPE_LAMINAS;
+            }
+        }
+
+        return $type;
     }
 
     private function createPaths(?string $projectType, ?bool $noVendors): string
