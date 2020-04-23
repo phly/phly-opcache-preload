@@ -35,7 +35,8 @@
             "dev-master": "1.0.x-dev"
         },
         "laminas": {
-            "module": "Phly\\OpcachePreload"
+            "component": "Phly\\OpcachePreload",
+            "config-provider": "Phly\\OpcachePreload\\ConfigProvider"
         }
     },
     "config": {
