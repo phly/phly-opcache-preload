@@ -19,6 +19,7 @@ class ConfigProvider
         return [
             'commands' => [
                 'opcache:preload-generate' => CreateOpcachePreloadFileCommand::class,
+                'opcache:preload-ini'      => GenerateIniDirectiveCommand::class,
             ],
         ];
     }
@@ -28,6 +29,7 @@ class ConfigProvider
         return [
             'invokables' => [
                 CreateOpcachePreloadFileCommand::class => CreateOpcachePreloadFileCommand::class,
+                GenerateIniDirectiveCommand::class     => GenerateIniDirectiveCommand::class,
             ],
         ];
     }

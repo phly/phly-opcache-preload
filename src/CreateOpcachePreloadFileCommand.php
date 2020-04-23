@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateOpcachePreloadFileCommand extends Command
 {
-    private const DEFAULT_FILENAME = 'preload.php';
+    public const DEFAULT_FILENAME = 'preload.php';
 
     private const HELP = <<< 'END'
 Generate an opcache preload definition file for your project. By default,
@@ -111,7 +111,7 @@ END;
         $output->writeln(sprintf('<info>Created opcache preload file "%s"</info>', $filename));
         $output->writeln('<info>Execute the following line to your php.ini to enable:</info>');
         $output->writeln(sprintf('    opcache.preload = %s', realpath($filename)));
-        $output->writeln('You can repeat the above instructions using the opcache:preloadini command');
+        $output->writeln('You can repeat the above instructions using the opcache:preload-ini command');
 
         return 0;
     }
