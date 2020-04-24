@@ -5,12 +5,20 @@
 
 This library provides CLI tooling for generating an opcache preload file.
 
+> ## Proof of Concept
+>
+> This library is a proof of concept, based on the Laminas [Opcache
+> Preloading for Mezzio and MVC RFC](https://discourse.laminas.dev/t/rfc-opache-preloading-for-mezzio-and-mvc/1442).
+> It will eventually live in the Laminas organization. As such, use this for
+> testing purposes only.
+
 ## Installation
 
 Run the following to install this library:
 
 ```bash
-$ composer require phly/phly-opcache-preload
+$ composer config repositories.opcache vcs https://github.com/phly/phly-opcache-preload.git
+$ composer require "phly/phly-opcache-preload:dev-master@dev"
 ```
 
 ## Usage
@@ -44,4 +52,4 @@ Browse the documentation online at https://docs.laminas.dev/laminas-{component}/
 ## Support
 
 * [Issues](https://github.com/phly/phly-opcache-preload/issues/)
-* [Forum](https://discourse.laminas.dev/)
+* [Forum](https://discourse.laminas.dev/t/rfc-opcache-preloading-for-mezzio-and-mvc/1442)
