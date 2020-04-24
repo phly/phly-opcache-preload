@@ -42,6 +42,38 @@ and this one to add it to a php.ini configuration file:
 $ ./vendor/bin/laminas opcache:preload-ini > $PHP_INI_DIR/conf.d/999-preload.ini
 ```
 
+## Configuring preloading rules
+
+`opcache:preload-generate` generates a file containing:
+
+- The class `Phly\OpcachePreload\Preloader`.
+- Creation of an instance of that class.
+- Configuration declarations.
+- A method call to start preloading.
+
+When it comes to configuring the preloader, you may call any of the following
+methods on the `Preloader` instance:
+
+- **`paths(string ...$paths): Preloader`**: Add one or more paths to preload.
+  These may be individual files, or entire subdirectory trees. When the file is
+  generated, the commandline tooling attempts to determine if you are preloading
+  for a Laminas MVC, Laminas API Tools, or Mezzio application, and will define
+  some initial paths for you accordingly. Otherwise, this will be empty.
+
+- **`ignorePaths(string ...$paths): Preloader`**: Add one or more paths to
+  ignore when preloading. As with `paths()`, these may be individual files or
+  subdirectory trees.
+
+- **`ignoreClasses(string ...$names): Preloader`**: Add one or more class names
+  to never preload. The tooling uses the composer `autoload_classmap.php` file
+  to determine if a class matches a given file, and, if so, it will skip
+  preloading that file.
+
+Each of the above may be called more than once, or with more than one argument.
+
+The last line of the file **MUST** be `$preloader->load();` as that line
+performs the actual preloading operations.
+
 <!--
 ## Documentation
 
