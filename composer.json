@@ -13,7 +13,7 @@
         "forum": "https://discourse.laminas.dev/"
     },
     "require": {
-        "php": "^7.4",
+        "php": "~7.4.4",
         "laminas/laminas-cli": "dev-master as 0.1.0"
     },
     "require-dev": {
