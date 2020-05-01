@@ -11,7 +11,7 @@ class PreloaderTest extends TestCase
 {
     private Preloader $preloader;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->preloader = new Preloader(__DIR__ . '/fixture/');
     }
@@ -53,14 +53,14 @@ class PreloaderTest extends TestCase
         $expectedPaths = $this->getFileList(__DIR__ . '/fixture/');
         $this->preloader->paths(__DIR__ . '/fixture/');
 
-        $this->setOutputCallback(function (string $output) use ($expectedPaths) {
+        $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
             $lines  = explode(PHP_EOL, trim($output));
             $last   = array_pop($lines);
             $count  = count($lines);
-            TestCase::assertSame(count($expectedPaths), $count);
-            TestCase::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
+            self::assertSame(count($expectedPaths), $count);
+            self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
-                TestCase::assertRegExp('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
+                self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
             }
         });
 
@@ -73,16 +73,16 @@ class PreloaderTest extends TestCase
         $this->preloader->paths(__DIR__ . '/fixture/');
         $this->preloader->ignorePaths(__DIR__ . '/fixture/bin/console.php');
 
-        $this->setOutputCallback(function (string $output) use ($expectedPaths) {
-            TestCase::assertNotRegExp('#Preloaded \`.*?/bin/console.php\`#', $output);
+        $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
+            self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/bin/console.php\`#', $output);
 
             $lines  = explode(PHP_EOL, trim($output));
             $last   = array_pop($lines);
             $count  = count($lines);
-            TestCase::assertSame(count($expectedPaths) - 1, $count);
-            TestCase::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
+            self::assertSame(count($expectedPaths) - 1, $count);
+            self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
-                TestCase::assertRegExp('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
+                self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
             }
         });
 
@@ -95,16 +95,16 @@ class PreloaderTest extends TestCase
         $this->preloader->paths(__DIR__ . '/fixture/');
         $this->preloader->ignoreClasses('Api\ApiHandler');
 
-        $this->setOutputCallback(function (string $output) use ($expectedPaths) {
-            TestCase::assertNotRegExp('#Preloaded \`.*?/src/Api/ApiHandler.php\`#', $output);
+        $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
+            self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/src/Api/ApiHandler.php\`#', $output);
 
             $lines  = explode(PHP_EOL, trim($output));
             $last   = array_pop($lines);
             $count  = count($lines);
-            TestCase::assertSame(count($expectedPaths) - 1, $count);
-            TestCase::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
+            self::assertSame(count($expectedPaths) - 1, $count);
+            self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
-                TestCase::assertRegExp('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
+                self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
             }
         });
 
@@ -115,23 +115,23 @@ class PreloaderTest extends TestCase
     {
         $expectedPaths = array_filter(
             $this->getFileList(__DIR__ . '/fixture/'),
-            function ($filename) {
+            static function (string $filename): bool {
                 return ! preg_match('#fixture/src/#', $filename);
             }
         );
         $this->preloader->paths(__DIR__ . '/fixture/');
         $this->preloader->ignorePaths(__DIR__ . '/fixture/src/');
 
-        $this->setOutputCallback(function (string $output) use ($expectedPaths) {
-            TestCase::assertNotRegExp('#Preloaded \`.*?/fixture/src#', $output);
+        $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
+            self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/fixture/src#', $output);
 
             $lines  = explode(PHP_EOL, trim($output));
             $last   = array_pop($lines);
             $count  = count($lines);
-            TestCase::assertSame(count($expectedPaths), $count);
-            TestCase::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
+            self::assertSame(count($expectedPaths), $count);
+            self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
-                TestCase::assertRegExp('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
+                self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
             }
         });
 
@@ -147,7 +147,7 @@ class PreloaderTest extends TestCase
             [__DIR__ . '/fixture/public/index.php'],
         );
 
-        $expectedPaths = array_filter($expectedPaths, function ($filename) {
+        $expectedPaths = array_filter($expectedPaths, static function (string $filename): bool {
             static $ignore = [
                 __DIR__ . '/fixture/config/autoload/local.php',
                 __DIR__ . '/fixture/src/Api/ApiHandler.php',
@@ -172,14 +172,14 @@ class PreloaderTest extends TestCase
                 'config/autoload/local.php',
             );
 
-        $this->setOutputCallback(function (string $output) use ($expectedPaths) {
+        $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
             $lines  = explode(PHP_EOL, trim($output));
             $last   = array_pop($lines);
             $count  = count($lines);
-            TestCase::assertSame(count($expectedPaths), $count, sprintf("Expected: %s\nReceived: %s", implode("\n", $expectedPaths), $output));
-            TestCase::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
+            self::assertSame(count($expectedPaths), $count, sprintf("Expected: %s\nReceived: %s", implode("\n", $expectedPaths), $output));
+            self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
-                TestCase::assertRegExp('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
+                self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);
             }
         });
 
