@@ -204,7 +204,7 @@ END;
                     ];
                 }
                 $paths = [
-                    ...$paths, 
+                    ...$paths,
                     'src/',
                     'config/',
                     'public/index.php',
@@ -215,7 +215,6 @@ END;
                 break;
         }
 
-        sort($paths, SORT_NATURAL);
         $paths = array_map(function ($path) {
             return sprintf('    \'%s\',', $path);
         }, $paths);
