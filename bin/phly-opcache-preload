@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace Phly\OpcachePreload;
+
+use PackageVersions\Versions;
+use Symfony\Component\Console\Application;
+
+// Setup/verify autoloading
+$cwd = getcwd();
+if (is_dir($cwd . '/vendor')) {
+    echo "Using project autoloader based on current working directory\n";
+    chdir($cwd);
+    require 'vendor/autoload.php';
+} elseif (file_exists($a = __DIR__ . '/../../../autoload.php')) {
+    echo "Using project autoloader\n";
+    require $a;
+} elseif (file_exists($a = __DIR__ . '/../vendor/autoload.php')) {
+    echo "Using project autoloader relative to bin directory\n";
+    require $a;
+} elseif (file_exists($a = __DIR__ . '/../autoload.php')) {
+    echo "Using project autoloader relative to vendor directory\n";
+    require $a;
+} else {
+    fwrite(STDERR, 'Cannot locate autoloader; please run "composer install"' . PHP_EOL);
+    exit(1);
+}
+
+$version = strstr(Versions::getVersion('phly/phly-opcache-preload'), '@', true);
+
+$application = new Application('phly-opcache-preload', $version);
+$application->addCommands([
+    new CreateOpcachePreloadFileCommand('generate:preload-file'),
+    new GenerateIniDirectiveCommand('generate:ini'),
+]);
+$application->run();

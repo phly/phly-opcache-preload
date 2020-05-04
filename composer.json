@@ -14,7 +14,8 @@
     },
     "require": {
         "php": "~7.4.4",
-        "laminas/laminas-cli": "dev-master as 0.1.0"
+        "laminas/laminas-cli": "dev-master as 0.1.0",
+        "symfony/console": "^5.0"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^2.0.0rc1@rc || ^2.0",
@@ -42,6 +43,9 @@
     "config": {
         "sort-packages": true
     },
+    "bin": [
+        "bin/phly-opcache-preload"
+    ],
     "scripts": {
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",

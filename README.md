@@ -14,7 +14,29 @@ This library provides CLI tooling for generating an opcache preload file.
 
 ## Installation
 
-Run the following to install this library:
+This package may be installed globally, or locally. We recommend installing
+globally, as it will generally be used exactly once within an application to
+generate the preload file, and then is no longer required.
+
+To install globally:
+
+```bash
+$ composer global config repositories.opcache vcs https://github.com/phly/phly-opcache-preload.git
+$ composer global require "phly/phly-opcache-preload:dev-master@dev"
+```
+
+> ### Add Composer to your $PATH
+>
+> To add the Composer global vendor binary directory to your path on Linux, Mac,
+> and other *nix variants:
+>
+> ```bash
+> export PATH=$(composer global config home)/vendor/bin:$PATH
+> ```
+>
+> On Windows, follow [this tutorial](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
+
+To install locally:
 
 ```bash
 $ composer config repositories.opcache vcs https://github.com/phly/phly-opcache-preload.git
@@ -26,25 +48,36 @@ $ composer require "phly/phly-opcache-preload:dev-master@dev"
 Get usage information after installation via the following commands:
 
 ```bash
-$ ./vendor/bin/laminas help opcache:preload-generate
-$ ./vendor/bin/laminas help opcache:preload-ini
+$ phly-opcache-preload help generate:preload-file
+$ phly-opcache-preload help generate:ini
 ```
 
 Generally speaking, use this command to generate the preload file:
 
 ```bash
-$ ./vendor/bin/laminas opcache:preload-generate
+$ phly-opcache-preload generate:preload-file
 ```
 
 and this one to add it to a php.ini configuration file:
 
 ```bash
-$ ./vendor/bin/laminas opcache:preload-ini > $PHP_INI_DIR/conf.d/999-preload.ini
+$ phly-opcache-preload generate:ini > $PHP_INI_DIR/conf.d/999-preload.ini
 ```
+
+> ### Local usage
+>
+> If you installed locally, use `./vendor/bin/phly-opcache-preload` in the above
+> examples. Alternately, if you have [laminas/laminas-cli](https://github.com/laminas/laminas-cli)
+> installed:
+>
+> ```bash
+> $ ./vendor/bin/laminas help opcache:preload-generate
+> $ ./vendor/bin/laminas help opcache:preload-ini
+> ```
 
 ## Configuring preloading rules
 
-`opcache:preload-generate` generates a file containing:
+`generate:preload-file` generates a file containing:
 
 - The class `Phly\OpcachePreload\Preloader`.
 - Creation of an instance of that class.
