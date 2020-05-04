@@ -96,7 +96,7 @@ final class Preloader
         }
 
         // Load file
-        require_once($path);
+        opcache_compile_file($path);
 
         $this->count += 1;
 
