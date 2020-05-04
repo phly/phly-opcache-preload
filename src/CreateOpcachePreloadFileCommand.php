@@ -39,6 +39,7 @@ $preloader->paths(
 
 // Preload!
 $preloader->load();
+
 END;
 
     private const TYPE_API_TOOLS = 'laminas-api-tools';
