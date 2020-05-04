@@ -184,27 +184,31 @@ END;
                 // fall-through
 
             case self::TYPE_LAMINAS:
-                $paths = [
-                    ...$paths,
-                    'config/',
-                    'module/',
-                    'public/index.php',
-                ];
                 if (! $noVendors) {
                     $paths[] = 'vendor/laminas/';
                 }
+                $paths = [
+                    ...$paths,
+                    'module/',
+                    'config/',
+                    'public/index.php',
+                ];
                 break;
 
             case self::TYPE_MEZZIO:
+                if (! $noVendors) {
+                    $paths = [
+                        ...$paths,
+                        'vendor/laminas/',
+                        'vendor/mezzio/',
+                    ];
+                }
                 $paths = [
-                    'config/',
+                    ...$paths, 
                     'src/',
+                    'config/',
                     'public/index.php',
                 ];
-                if (! $noVendors) {
-                    $paths[] = 'vendor/laminas/';
-                    $paths[] = 'vendor/mezzio/';
-                }
                 break;
 
             default:
