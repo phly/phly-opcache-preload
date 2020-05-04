@@ -10,11 +10,29 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function basename;
+use function dirname;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function getcwd;
+use function implode;
+use function in_array;
+use function json_decode;
+use function realpath;
+use function sprintf;
+use function strlen;
+use function strpos;
+use function substr;
+
 class CreateOpcachePreloadFileCommand extends Command
 {
     public const DEFAULT_FILENAME = 'preload.php';
 
-    private const HELP = <<< 'END'
+    private const HELP = <<<'END'
 Generate an opcache preload definition file for your project. By default,
 it generates the file "preload.php" in the root of your project; you can
 override this with the --filename option.
@@ -26,7 +44,7 @@ the --project-type option (using one of the values "laminas",
 creation using --no-vendors.
 END;
 
-    private const TEMPLATE = <<< 'END'
+    private const TEMPLATE = <<<'END'
 %s
 // Initialize and configure Preloader. Use one or more of:
 // ->paths(...string $paths) to specify paths to look under
@@ -149,7 +167,7 @@ END;
             return null;
         }
 
-        $json = file_get_contents($composerFile);
+        $json     = file_get_contents($composerFile);
         $composer = json_decode($json, true);
         if (! isset($composer['require'])) {
             return null;

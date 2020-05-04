@@ -4,11 +4,28 @@ declare(strict_types=1);
 
 namespace Phly\OpcachePreload;
 
+use function array_flip;
+use function array_merge;
+use function closedir;
+use function in_array;
+use function is_dir;
+use function opcache_compile_file;
+use function opendir;
+use function preg_match;
+use function printf;
+use function readdir;
+use function realpath;
+use function rtrim;
+use function sprintf;
+use function strpos;
+
+use const PHP_EOL;
+
 final class Preloader
 {
     /** @var string[] */
     private array $ignoreClasses = [
-        __CLASS__,
+        self::class,
     ];
 
     /** @var string[] */
@@ -26,8 +43,8 @@ final class Preloader
     {
         // We'll use composer's classmap to help us identify class files
         // for purposes of ignoring classes.
-        $classMapFile       = sprintf('%s/vendor/composer/autoload_classmap.php', $projectRoot ?: realpath(__DIR__));
-        $classMap           = require $classMapFile;
+        $classMapFile = sprintf('%s/vendor/composer/autoload_classmap.php', $projectRoot ?: realpath(__DIR__));
+        $classMap     = require $classMapFile;
 
         $this->classFileMap = array_flip($classMap);
         $this->paths        = $paths;

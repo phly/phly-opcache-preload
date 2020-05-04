@@ -7,6 +7,23 @@ namespace PhlyTest\OpcachePreload;
 use Phly\OpcachePreload\Preloader;
 use PHPUnit\Framework\TestCase;
 
+use function array_filter;
+use function array_merge;
+use function array_pop;
+use function count;
+use function explode;
+use function implode;
+use function in_array;
+use function is_dir;
+use function opendir;
+use function preg_match;
+use function readdir;
+use function rtrim;
+use function sprintf;
+use function trim;
+
+use const PHP_EOL;
+
 class PreloaderTest extends TestCase
 {
     private Preloader $preloader;
@@ -54,9 +71,9 @@ class PreloaderTest extends TestCase
         $this->preloader->paths(__DIR__ . '/fixture/');
 
         $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
-            $lines  = explode(PHP_EOL, trim($output));
-            $last   = array_pop($lines);
-            $count  = count($lines);
+            $lines = explode(PHP_EOL, trim($output));
+            $last  = array_pop($lines);
+            $count = count($lines);
             self::assertSame(count($expectedPaths), $count);
             self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
@@ -76,9 +93,9 @@ class PreloaderTest extends TestCase
         $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
             self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/bin/console.php\`#', $output);
 
-            $lines  = explode(PHP_EOL, trim($output));
-            $last   = array_pop($lines);
-            $count  = count($lines);
+            $lines = explode(PHP_EOL, trim($output));
+            $last  = array_pop($lines);
+            $count = count($lines);
             self::assertSame(count($expectedPaths) - 1, $count);
             self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
@@ -98,9 +115,9 @@ class PreloaderTest extends TestCase
         $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
             self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/src/Api/ApiHandler.php\`#', $output);
 
-            $lines  = explode(PHP_EOL, trim($output));
-            $last   = array_pop($lines);
-            $count  = count($lines);
+            $lines = explode(PHP_EOL, trim($output));
+            $last  = array_pop($lines);
+            $count = count($lines);
             self::assertSame(count($expectedPaths) - 1, $count);
             self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
@@ -125,9 +142,9 @@ class PreloaderTest extends TestCase
         $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
             self::assertDoesNotMatchRegularExpression('#Preloaded \`.*?/fixture/src#', $output);
 
-            $lines  = explode(PHP_EOL, trim($output));
-            $last   = array_pop($lines);
-            $count  = count($lines);
+            $lines = explode(PHP_EOL, trim($output));
+            $last  = array_pop($lines);
+            $count = count($lines);
             self::assertSame(count($expectedPaths), $count);
             self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
@@ -173,10 +190,14 @@ class PreloaderTest extends TestCase
             );
 
         $this->setOutputCallback(static function (string $output) use ($expectedPaths) {
-            $lines  = explode(PHP_EOL, trim($output));
-            $last   = array_pop($lines);
-            $count  = count($lines);
-            self::assertSame(count($expectedPaths), $count, sprintf("Expected: %s\nReceived: %s", implode("\n", $expectedPaths), $output));
+            $lines = explode(PHP_EOL, trim($output));
+            $last  = array_pop($lines);
+            $count = count($lines);
+            self::assertSame(
+                count($expectedPaths),
+                $count,
+                sprintf("Expected: %s\nReceived: %s", implode("\n", $expectedPaths), $output)
+            );
             self::assertEquals(sprintf('[Preloader] Preloaded %d paths', $count), $last, $output);
             foreach ($lines as $line) {
                 self::assertMatchesRegularExpression('#^\[Preloader\] Preloaded \`.*?\.(php|phtml)\`$#', $line);

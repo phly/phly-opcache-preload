@@ -9,9 +9,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function ltrim;
+use function realpath;
+use function rtrim;
+use function sprintf;
+
+use const DIRECTORY_SEPARATOR;
+
 class GenerateIniDirectiveCommand extends Command
 {
-    private const HELP = <<< 'END'
+    private const HELP = <<<'END'
 Generate the php.ini opcache.preload directive to add to your php.ini file.
 
 Generally, this should be invoked as:
