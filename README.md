@@ -67,13 +67,7 @@ $ phly-opcache-preload generate:ini > $PHP_INI_DIR/conf.d/999-preload.ini
 > ### Local usage
 >
 > If you installed locally, use `./vendor/bin/phly-opcache-preload` in the above
-> examples. Alternately, if you have [laminas/laminas-cli](https://github.com/laminas/laminas-cli)
-> installed:
->
-> ```bash
-> $ ./vendor/bin/laminas help opcache:preload-generate
-> $ ./vendor/bin/laminas help opcache:preload-ini
-> ```
+> examples.
 
 ## Configuring preloading rules
 
